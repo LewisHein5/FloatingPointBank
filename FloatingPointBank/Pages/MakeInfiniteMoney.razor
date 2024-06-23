@@ -1,21 +1,38 @@
 @page "/make-infinite-money"
+
 <h3>Make infinite money</h3>
 
 Last time, we lost money by transferring a tiny amount out of our savings account which was rounded up by a factor of almost 2.
 If, instead,  we transfer a slightly smaller amount, it will be rounded to zero and we can unlock a cool wealth-building hack that Big Math doesn't want you to know:
 
-<TwoAccountsFloatingPoint @ref="_accounts" OnClick="DisplayExplanation" GetTransferAmount="() => _accounts.GrowingTransferAmount()"/>
+<BankAccount @ref="Savings" TBalance="float" Balance="InitialSavingsBalance" />
+<BankAccount @ref="Checking" TBalance="float" Balance="InitialCheckingBalance" />
 
+<p role="status">
+    Current total balance: @TotalMoney.ToString("C")
+</p>
+
+@if (BurnedMoney == 0)
+{
+<b>Click the button to make a transfer</b>
+}
+@if (BurnedMoney < 0)
+{
+    <b>Look at that @((-1*BurnedMoney).ToString("C")) of passive income📈</b>
+}
 <br/>
+
+<button class ="btn btn-primary" @onclick="HandleClick">Transfer $@TransferAmount and watch the magic</button>
+
 <br/>
 
 @if (!CollapseExplanation)
 {
     <div><h3>What happened?</h3> 
         <p>
-            This time, we did the opposite. When we subtract @_accounts.GrowingTransferAmount()
-            from @_accounts.OriginalSavingsBalance, this is rounded to the nearest floating-point value, which is still
-            @_accounts.OriginalSavingsBalance. This is then added to the smaller balance and rounded to @_accounts.GrowingTransferAmount()
+            This time, we did the opposite. When we subtract @InitialTransferAmount
+            from @InitialSavingsBalance, this is rounded to the nearest floating-point value, which is still
+            @InitialSavingsBalance. This is then added to the smaller balance of @InitialCheckingBalance and rounded to @TransferAmount
         </p>
         
         <p>
@@ -29,8 +46,24 @@ If, instead,  we transfer a slightly smaller amount, it will be rounded to zero 
 
 @code
 {
-    TwoAccountsFloatingPoint _accounts;
+    
+    BankAccount<float> Savings { get; set; } = new(InitialSavingsBalance);
+    BankAccount<float> Checking { get; set; } = new(InitialCheckingBalance);
+    public const float InitialSavingsBalance = 1000000f;
+    public const float InitialCheckingBalance = 0f;
+    public float InitialTransferAmount = float.BitDecrement((InitialSavingsBalance - float.BitDecrement(InitialSavingsBalance)) / 2);
+    public double BurnedMoney { get; set; }
+    public double TotalMoney { get; set; } = InitialCheckingBalance + InitialSavingsBalance;
+    public float TransferAmount => float.BitDecrement((Savings.Balance - float.BitDecrement(Savings.Balance)) / 2);
     [Parameter] public bool CollapseExplanation { get; set; } = true;
+
+    public void HandleClick()
+    {
+        Savings.Transfer(TransferAmount, Checking);
+        TotalMoney = Savings.Balance + (double)Checking.Balance;
+        BurnedMoney = (double)InitialSavingsBalance + InitialCheckingBalance - TotalMoney;
+        DisplayExplanation();
+    }
     
     public void DisplayExplanation()
     {

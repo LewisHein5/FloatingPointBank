@@ -1029,3 +1029,4 @@
 /home/lewis/FloatingPointBank/FloatingPointBank/obj/Debug/net8.0/refint/FloatingPointBank.dll
 /home/lewis/FloatingPointBank/FloatingPointBank/obj/Debug/net8.0/FloatingPointBank.pdb
 /home/lewis/FloatingPointBank/FloatingPointBank/obj/Debug/net8.0/ref/FloatingPointBank.dll
+/home/lewis/FloatingPointBank/FloatingPointBank/obj/Debug/net8.0/FloatingPointBank.sourcelink.json

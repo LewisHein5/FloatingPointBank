@@ -4,9 +4,23 @@
 A naive approach to transferring money might be to subtract the transfer amount from one account and add it to the other. 
 Let's see how well this works out for our fintech startup:
 
-<TwoAccountsFloatingPoint @ref="_accounts" OnClick="DisplayExplanation" GetTransferAmount="() => _accounts.VanishingTransferAmount()"/>
+<BankAccount @ref="Savings" TBalance="float" Balance="InitialSavingsBalance" />
+<BankAccount @ref="Checking" TBalance="float" Balance="InitialCheckingBalance" />
 
+<p role="status">
+    Current total balance: @((TotalMoney.ToString("C")))
+</p>
+
+@if (BurnedMoney == 0)
+{
+    <b>Click the button to make a transfer</b>
+}
+@if (BurnedMoney > 0)
+{
+    <b>You have lost @BurnedMoney.ToString("C") transfering money. It's just gone 💸.</b>
+}
 <br/>
+<button class ="btn btn-primary" @onclick="HandleClick">Transfer $@TransferAmount and watch the magic</button>
 <br/>
 
 @if (!CollapseExplanation)
@@ -16,14 +30,15 @@ Let's see how well this works out for our fintech startup:
             Floating-point numbers are not evenly distributed across the number line. Instead of each floating-point number
             being a constant distance away from the next, each floating-point number is a constant multiple of the next.
             This means that (excluding zero and other edge cases) for any number X, the next largest number is X / (1 - 2^-23) and the
-            next smallest is X * (1-2^-23). When we subtract @_accounts.VanishingTransferAmount()
-            from @_accounts.OriginalSavingsBalance, this is rounded to the nearest floating-point value, which is 
-            @(float.BitDecrement(_accounts.OriginalSavingsBalance)). This is then added to the smaller balance and rounded to @_accounts.VanishingTransferAmount().
-            This means that we subtracted @(_accounts.OriginalSavingsBalance - float.BitDecrement(_accounts.OriginalSavingsBalance)).
+            next smallest is X * (1-2^-23). When we subtract @InitialTransferAmount.ToString("R")
+            from @InitialSavingsBalance, this is rounded to the nearest floating-point value, which is 
+            @(float.BitDecrement(InitialSavingsBalance)). This is then added to the smaller balance of @InitialCheckingBalance
+            and rounded to @(InitialCheckingBalance + TransferAmount).
+            This means that we subtracted @(InitialSavingsBalance - float.BitDecrement(InitialSavingsBalance))
             from the account with a larger balance and added just less than half this amount to the other account.
         </p>
         
-       <p>This fact just cost you $@_accounts.BurnedMoney.</p>
+       <p>This fact just cost you $@BurnedMoney.</p>
         
         <p>
             However, we can reverse this to grow our money instead of losing it. See <a href="/make-infinite-money">step 3.</a>
@@ -31,13 +46,31 @@ Let's see how well this works out for our fintech startup:
     </div>
 }
 
+
+
 @code
 {
-    TwoAccountsFloatingPoint _accounts;
+    BankAccount<float> Savings { get; set; } = new(InitialSavingsBalance);
+    BankAccount<float> Checking { get; set; } = new(InitialCheckingBalance);
+    public const float InitialSavingsBalance = 1000000f;
+    public const float InitialCheckingBalance = 0f;
+    public float InitialTransferAmount = float.BitIncrement((InitialSavingsBalance - float.BitDecrement(InitialSavingsBalance)) / 2);
+    public double BurnedMoney { get; set; }
+    public double TotalMoney { get; set; } = InitialSavingsBalance + InitialCheckingBalance;
+    public float TransferAmount => float.BitIncrement((Savings.Balance - float.BitDecrement(Savings.Balance)) / 2);
     [Parameter] public bool CollapseExplanation { get; set; } = true;
+
+    public void HandleClick()
+    {
+        Savings.Transfer(TransferAmount,Checking);
+        TotalMoney = Savings.Balance + (double)Checking.Balance;
+        BurnedMoney = (double)InitialSavingsBalance + InitialCheckingBalance - TotalMoney;
+        DisplayExplanation();
+    }
     
     public void DisplayExplanation()
     {
         CollapseExplanation = false;
     }
 }
+

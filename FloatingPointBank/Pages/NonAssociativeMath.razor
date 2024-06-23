@@ -5,7 +5,7 @@
 The loss of precision at large values for floating-point numbers means that addition is no longer associative. 
 In other words, the order we add numbers matters. This can have catastrophic consequences when we need precision
 
-<TwoAccountsFloatingPoint @ref="_accounts" OnClick="DisplayExplanation" GetTransferAmount="() => _accounts.GrowingTransferAmount()"/>
+<BankAccount @ref="Account" TBalance="float"/>
 
 <br/>
 <br/>
@@ -14,23 +14,14 @@ In other words, the order we add numbers matters. This can have catastrophic con
 {
     <div><h3>What happened?</h3> 
         <p>
-            This time, we did the opposite. When we subtract @_accounts.GrowingTransferAmount()
-            from @_accounts.OriginalSavingsBalance, this is rounded to the nearest floating-point value, which is still
-            @_accounts.OriginalSavingsBalance. This is then added to the smaller balance and rounded to @_accounts.GrowingTransferAmount()
-        </p>
-        
-        <p>
-            Congratulations, you have unlocked passive income.
-            You can either <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&pp=ygUXbmV2ZXIgZ29ubmEgZ2l2ZSB5b3UgdXA%3D">learn how to sell your passive income course to others</a>,
-            <a href="https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html">read more about floating point numbers</a>,
-            or <a href="/NonAssociativeMath">Go to the next step</a>
+            adada
         </p>
     </div>
 }
 
 @code
 {
-    TwoAccountsFloatingPoint _accounts;
+    public BankAccount<float> Account { get; set; }
     [Parameter] public bool CollapseExplanation { get; set; } = true;
     
     public void DisplayExplanation()

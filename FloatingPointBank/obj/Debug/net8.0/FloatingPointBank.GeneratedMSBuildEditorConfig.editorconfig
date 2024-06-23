@@ -26,24 +26,20 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/lewis/FloatingPointBank/FloatingPointBank/Pages/Counter.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQ291bnRlci5yYXpvcg==
+[/home/lewis/FloatingPointBank/FloatingPointBank/Pages/BankAccount.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQmFua0FjY291bnQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [/home/lewis/FloatingPointBank/FloatingPointBank/Pages/Home.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvSG9tZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/lewis/FloatingPointBank/FloatingPointBank/Pages/IntegerBankBalance.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvSW50ZWdlckJhbmtCYWxhbmNlLnJhem9y
-build_metadata.AdditionalFiles.CssScope = 
-
 [/home/lewis/FloatingPointBank/FloatingPointBank/Pages/MakeInfiniteMoney.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvTWFrZUluZmluaXRlTW9uZXkucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/lewis/FloatingPointBank/FloatingPointBank/Pages/TwoAccountsFloatingPoint.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvVHdvQWNjb3VudHNGbG9hdGluZ1BvaW50LnJhem9y
+[/home/lewis/FloatingPointBank/FloatingPointBank/Pages/NonAssociativeMath.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvTm9uQXNzb2NpYXRpdmVNYXRoLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [/home/lewis/FloatingPointBank/FloatingPointBank/Pages/VanishingFloatingPointMoney.razor]
