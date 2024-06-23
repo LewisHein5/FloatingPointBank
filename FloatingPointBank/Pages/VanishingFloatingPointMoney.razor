@@ -1,0 +1,43 @@
+@page "/vanishing-floating-point-money"
+<h3>Less money, More problems</h3>
+
+A naive approach to transferring money might be to subtract the transfer amount from one account and add it to the other. 
+Let's see how well this works out for our fintech startup:
+
+<TwoAccountsFloatingPoint @ref="_accounts" OnClick="DisplayExplanation" GetTransferAmount="() => _accounts.VanishingTransferAmount()"/>
+
+<br/>
+<br/>
+
+@if (!CollapseExplanation)
+{
+    <div><h3>What happened?</h3> 
+        <p>
+            Floating-point numbers are not evenly distributed across the number line. Instead of each floating-point number
+            being a constant distance away from the next, each floating-point number is a constant multiple of the next.
+            This means that (excluding zero and other edge cases) for any number X, the next largest number is X / (1 - 2^-23) and the
+            next smallest is X * (1-2^-23). When we subtract @_accounts.VanishingTransferAmount()
+            from @_accounts.OriginalSavingsBalance, this is rounded to the nearest floating-point value, which is 
+            @(float.BitDecrement(_accounts.OriginalSavingsBalance)). This is then added to the smaller balance and rounded to @_accounts.VanishingTransferAmount().
+            This means that we subtracted @(_accounts.OriginalSavingsBalance - float.BitDecrement(_accounts.OriginalSavingsBalance)).
+            from the account with a larger balance and added just less than half this amount to the other account.
+        </p>
+        
+       <p>This fact just cost you $@_accounts.BurnedMoney.</p>
+        
+        <p>
+            However, we can reverse this to grow our money instead of losing it. See <a href="/make-infinite-money">step 3.</a>
+        </p>
+    </div>
+}
+
+@code
+{
+    TwoAccountsFloatingPoint _accounts;
+    [Parameter] public bool CollapseExplanation { get; set; } = true;
+    
+    public void DisplayExplanation()
+    {
+        CollapseExplanation = false;
+    }
+}

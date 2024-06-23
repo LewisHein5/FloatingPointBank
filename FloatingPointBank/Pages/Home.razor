@@ -1,0 +1,56 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<h1>Welcome to SparrowBank</h1>
+
+<h4>Without a doubt, the worst bank you have ever heard of.</h4>
+
+<p>Computers are well known to be bad at math. In fact, <b>the <i>only</i> 
+        good thing about computer arithmetic is that it is really fast.</b> 
+    <br/>
+    <p>
+        I could bore you at length with Wikipedia articles and Official IEEE Specifications but that would be, well, boring.
+        Instead, I want to do something different. I want to show you the pitfalls of computer math, let you fall into them,
+        and then teach you how to skirt around the edge. So instead of reading boring documents, we're going to build a FinTech startup. I call it <i>SparrowBank.</i>
+    </p>
+    <p>
+        Let's start with a simple example. In real math, there is no largest number. This is not true in computer math.
+    </p>
+</p>
+
+
+<IntegerBankBalance OnClick="DisplayExplanation"/>
+
+<br/>
+<br/>
+
+@if (!CollapseExplanation)
+{
+    <div><h3>What happened?</h3> 
+        It's actually pretty simple: we ran out of digits to store the bank balance. Integers are stored
+        using a sign bit at the beginning: 0 is positive and 1 is negative. For instance, if our integers were 4 bits long:
+        <br/>
+        0010 = 2
+        <br/>
+        1010 = -2.
+    
+        <p>Addition works as normal, but what happens when we add 1 to the value 7 (0111)? 
+            Following the rules of arithmetic, we get 1000, otherwise known as -8.</p>
+        This choice may seem arbitrary and unintuitive, but it preserves the algebraic properties of integers.
+        See <a href="https://en.wikipedia.org/wiki/Two%27s_complement"> Wikipedia </a>.
+        <br/>
+    
+        Ready for more? Take a look at <a href="/vanishing-floating-point-money">step 2!</a>
+    </div>
+}
+
+@code
+{
+    [Parameter] public bool CollapseExplanation { get; set; } = true;
+    
+    public void DisplayExplanation()
+    {
+        CollapseExplanation = false;
+    }
+}
