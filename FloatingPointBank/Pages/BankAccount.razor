@@ -9,16 +9,14 @@
 {
     protected override void OnInitialized()
     {
+        accountUpdateService.Accounts.Add(this);
         accountUpdateService.TransferEvent += Transfer;
     }
-    private protected void Transfer()
+    private void Transfer(BankAccount<TBalance> dst, TBalance amount)
     {
-        accountUpdateService.TransferAmounts.TryGetValue(this, out var amount);
-        if (amount != null) Transfer(amount);
-        InvokeAsync(() =>
-        {
-            StateHasChanged();
-        });
+        if (dst != this) return;
+        Transfer(amount);
+        accountUpdateService.BalanceChanged();
     }
 
 }

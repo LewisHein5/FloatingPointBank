@@ -4,22 +4,29 @@ using FloatingPointBank.Pages;
 
 namespace FloatingPointBank.Services;
 
-public delegate void TransferEventHandler();
+public delegate void TransferEventHandler<TBalance>(BankAccount<TBalance> dstAccount, TBalance amount) where TBalance: INumber<TBalance>;
+
+public delegate void BalanceChangedHandler();
 
 public class AccountUpdateService<TBalance> where TBalance: INumber<TBalance>
 {
-    public event TransferEventHandler TransferEvent;
-    public readonly ConcurrentDictionary<BankAccount<TBalance>, TBalance> TransferAmounts = new();
+    public event TransferEventHandler<TBalance> TransferEvent;
+    public event BalanceChangedHandler BalanceChangedEvent;
+    public readonly ConcurrentBag<BankAccount<TBalance>> Accounts = new();
 
     public void Transfer(BankAccount<TBalance> dstAccount, TBalance amount)
     {
-        TransferAmounts.AddOrUpdate(dstAccount, _ => amount, (_, _) => amount);
-        TransferEvent?.Invoke();
+        TransferEvent?.Invoke(dstAccount, amount); //TODO isn't there a better way to do this 
     }
 
     public void Transfer(BankAccount<TBalance> srcAccount, BankAccount<TBalance> dstAccount, TBalance amount)
     {
         Transfer(srcAccount, -amount);
         Transfer(dstAccount, amount);
+    }
+
+    public void BalanceChanged()
+    {
+        BalanceChangedEvent?.Invoke(); //todo race condition?
     }
 }
