@@ -1,5 +1,5 @@
-@using System.Globalization
 @typeparam TBalance
+@inject AccountUpdateService<TBalance> accountUpdateService;
 <h5>Account Balance:</h5>
 
 <p role="status" >@Balance.ToString()</p>
@@ -7,5 +7,18 @@
 
 @code
 {
-    
+    protected override void OnInitialized()
+    {
+        accountUpdateService.TransferEvent += Transfer;
+    }
+    private protected void Transfer()
+    {
+        accountUpdateService.TransferAmounts.TryGetValue(this, out var amount);
+        if (amount != null) Transfer(amount);
+        InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
+    }
+
 }

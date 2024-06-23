@@ -61,12 +61,12 @@
 
 @code
 {
-    public BankAccount<short> Account { get; set; } = new(short.MaxValue);
+    private BankAccount<short> Account { get; set; } = new(short.MaxValue);
     [Parameter] public bool CollapseExplanation { get; set; } = true;
 
-    public void HandleButtonClick()
+    private void HandleButtonClick()
     {
-        AddDollar();//accountUpdateService.Transfer(1);
+        accountUpdateService.Transfer(Account,1);
         DisplayExplanation();
     }
 
@@ -74,8 +74,8 @@
     {
         Account.Transfer(1);
     }
-    
-    public void DisplayExplanation()
+
+    private void DisplayExplanation()
     {
         CollapseExplanation = false;
     }

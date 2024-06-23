@@ -1,4 +1,6 @@
 @page "/vanishing-floating-point-money"
+@inject AccountUpdateService<float> updateService;
+
 <h3>Less money, More problems</h3>
 
 A naive approach to transferring money might be to subtract the transfer amount from one account and add it to the other. 
@@ -62,7 +64,7 @@ Let's see how well this works out for our fintech startup:
 
     public void HandleClick()
     {
-        Savings.Transfer(TransferAmount,Checking);
+        updateService.Transfer(Savings,Checking, TransferAmount);
         TotalMoney = Savings.Balance + (double)Checking.Balance;
         BurnedMoney = (double)InitialSavingsBalance + InitialCheckingBalance - TotalMoney;
         DisplayExplanation();

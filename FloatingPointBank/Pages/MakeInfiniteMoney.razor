@@ -1,4 +1,5 @@
 @page "/make-infinite-money"
+@inject AccountUpdateService<float> updateService
 
 <h3>Make infinite money</h3>
 
@@ -59,7 +60,7 @@ If, instead,  we transfer a slightly smaller amount, it will be rounded to zero 
 
     public void HandleClick()
     {
-        Savings.Transfer(TransferAmount, Checking);
+        updateService.Transfer(Savings,Checking, TransferAmount);
         TotalMoney = Savings.Balance + (double)Checking.Balance;
         BurnedMoney = (double)InitialSavingsBalance + InitialCheckingBalance - TotalMoney;
         DisplayExplanation();
