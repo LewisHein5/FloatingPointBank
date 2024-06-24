@@ -1,5 +1,4 @@
 ﻿@page "/"
-@inject AccountUpdateService<short> accountUpdateService;
 
 <PageTitle>Home</PageTitle>
 
@@ -24,17 +23,10 @@
 </p>
 
 
-<BankAccount @ref="Account" TBalance="short" Balance="short.MaxValue"/>
+<!--<BankAccount @ref="Account" TBalance="short" Balance="short.MaxValue"/>-->
 
 <p>
-    @if (Account.Balance > 0)
-    {
-        <b>Wow you have so many dollars. Let's add one more:</b>
-    }
-    @if (Account.Balance <= 0)
-    {
-        <span style="color: red"><b>Oh no. That's not how banks work 😵</b></span>
-    }
+    
 </p>
 
 <button class ="btn btn-primary" @onclick="HandleButtonClick">Add $1 🤑</button>
@@ -78,12 +70,12 @@
 
 @code
 {
-    private BankAccount<short> Account { get; set; } = new(short.MaxValue);
+    //private BankAccount<short> Account { get; set; } = new(short.MaxValue);
     [Parameter] public bool CollapseExplanation { get; set; } = true;
 
     private void HandleButtonClick()
     {
-        accountUpdateService.Transfer(Account,1);
+        //accountUpdateService.Transfer(Account,1);
         DisplayExplanation();
     }
 
