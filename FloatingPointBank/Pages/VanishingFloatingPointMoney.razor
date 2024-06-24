@@ -61,22 +61,22 @@ Let's see how well this works out for our fintech startup:
     BankAccount<float> Checking { get; set; } = new(InitialCheckingBalance);
     public const float InitialSavingsBalance = 1000000f;
     public const float InitialCheckingBalance = 0f;
-    public float InitialTransferAmount = float.BitIncrement((InitialSavingsBalance - float.BitDecrement(InitialSavingsBalance)) / 2);
-    public double BurnedMoney { get; set; }
-    public double TotalMoney { get; set; } = InitialSavingsBalance + InitialCheckingBalance;
-    public float TransferAmount => float.BitIncrement((Savings.Balance - float.BitDecrement(Savings.Balance)) / 2);
+    private readonly float InitialTransferAmount = float.BitIncrement((InitialSavingsBalance - float.BitDecrement(InitialSavingsBalance)) / 2);
+    private double BurnedMoney { get; set; }
+    private double TotalMoney { get; set; } = InitialSavingsBalance + InitialCheckingBalance;
+    private float TransferAmount => float.BitIncrement((Savings.Balance - float.BitDecrement(Savings.Balance)) / 2);
     
     [Parameter] public bool CollapseExplanation { get; set; } = true;
 
-    public void HandleClick()
+    private void HandleClick()
     {
         updateService.Transfer(Savings,Checking, TransferAmount);
         TotalMoney = Savings.Balance + (double)Checking.Balance;
         BurnedMoney = (double)InitialSavingsBalance + InitialCheckingBalance - TotalMoney;
         DisplayExplanation();
     }
-    
-    public void DisplayExplanation()
+
+    private void DisplayExplanation()
     {
         CollapseExplanation = false;
     }

@@ -29,7 +29,7 @@
     private void UpdateMoney()
     {
         TotalMoney = updateService.Accounts.Sum(a => double.CreateChecked(a.Balance));
-        InvokeAsync(() => StateHasChanged());
+        InvokeAsync(StateHasChanged);
     }
 
     private string Style()
@@ -37,8 +37,6 @@
         Console.WriteLine(TargetMoney);
         Console.WriteLine(TotalMoney);
         Console.WriteLine(Math.Abs(TotalMoney - TargetMoney));
-        if(Math.Abs(TotalMoney - TargetMoney) > double.Epsilon * 1024)
-            return "color: red";
-        return "";
+        return Math.Abs(TotalMoney - TargetMoney) > double.Epsilon * 1024 ? "color: red" : "";
     }
 }

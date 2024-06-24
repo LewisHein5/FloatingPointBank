@@ -30,7 +30,7 @@ If, instead,  we transfer a slightly smaller amount, it will be rounded to zero 
 {
     <div><h3>What happened?</h3> 
         <p>
-            This time, we did the opposite. When we subtract @InitialTransferAmount
+            This time, we did the opposite. When we subtract @_initialTransferAmount
             from @InitialSavingsBalance, this is rounded to the nearest floating-point value, which is still
             @InitialSavingsBalance. This is then added to the smaller balance of @InitialCheckingBalance and rounded to @TransferAmount
         </p>
@@ -68,21 +68,21 @@ If, instead,  we transfer a slightly smaller amount, it will be rounded to zero 
     BankAccount<float> Checking { get; set; } = new(InitialCheckingBalance);
     public const float InitialSavingsBalance = 1000000f;
     public const float InitialCheckingBalance = 0f;
-    public float InitialTransferAmount = float.BitDecrement((InitialSavingsBalance - float.BitDecrement(InitialSavingsBalance)) / 2);
-    public double BurnedMoney { get; set; }
-    public double TotalMoney { get; set; } = InitialCheckingBalance + InitialSavingsBalance;
-    public float TransferAmount => float.BitDecrement((Savings.Balance - float.BitDecrement(Savings.Balance)) / 2);
+    private readonly float _initialTransferAmount = float.BitDecrement((InitialSavingsBalance - float.BitDecrement(InitialSavingsBalance)) / 2);
+    private double BurnedMoney { get; set; }
+    private double TotalMoney { get; set; } = InitialCheckingBalance + InitialSavingsBalance;
+    private float TransferAmount => float.BitDecrement((Savings.Balance - float.BitDecrement(Savings.Balance)) / 2);
     [Parameter] public bool CollapseExplanation { get; set; } = true;
 
-    public void HandleClick()
+    private void HandleClick()
     {
         updateService.Transfer(Savings,Checking, TransferAmount);
         TotalMoney = Savings.Balance + (double)Checking.Balance;
         BurnedMoney = (double)InitialSavingsBalance + InitialCheckingBalance - TotalMoney;
         DisplayExplanation();
     }
-    
-    public void DisplayExplanation()
+
+    private void DisplayExplanation()
     {
         CollapseExplanation = false;
     }

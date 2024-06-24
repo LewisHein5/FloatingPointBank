@@ -12,7 +12,7 @@ public class AccountUpdateService<TBalance> where TBalance: INumber<TBalance>
 {
     public event TransferEventHandler<TBalance> TransferEvent;
     public event BalanceChangedHandler BalanceChangedEvent;
-    public readonly ConcurrentBag<BankAccount<TBalance>> Accounts = new();
+    public readonly ConcurrentBag<BankAccount<TBalance>> Accounts = [];
 
     public void Transfer(BankAccount<TBalance> dstAccount, TBalance amount)
     {

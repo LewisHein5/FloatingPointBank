@@ -1,5 +1,4 @@
 using System.Numerics;
-using FloatingPointBank.Services;
 using Microsoft.AspNetCore.Components;
 
 namespace FloatingPointBank.Pages;
@@ -19,14 +18,11 @@ public partial class BankAccount<TBalance>(TBalance balance) : ComponentBase
 
 
     //public float GrowingTransferAmount() => float.BitDecrement((Balance - float.BitDecrement(Balance)) / 2);*/
-    
-    public void Transfer(TBalance amount)
+
+    private void Transfer(TBalance amount)
     {
         Balance += amount;
-        InvokeAsync(() =>
-        {
-            StateHasChanged();
-        });
+        InvokeAsync(StateHasChanged);
     }
 
     public void Transfer(TBalance amount, BankAccount<TBalance> other)

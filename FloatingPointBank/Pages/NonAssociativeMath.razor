@@ -12,11 +12,11 @@ computed answers mean anything.
 
 
 <br/>
-<b>Try making the transactions in different orders to reach the correct balance of @(TargetBalance.ToString("C"))</b>
+<b>Try making the transactions in different orders to reach the correct balance of @TargetBalance.ToString("C")</b>
 <br/>
 
 <ol>
-    @foreach (var deposit in Deposits)
+    @foreach (var deposit in _deposits)
     {
         @if (deposit >= 0)
         {
@@ -29,21 +29,21 @@ computed answers mean anything.
     }
 </ol>
 
-@for (var i = 0; i < DepositAmounts.Count; i++)
+@for (var i = 0; i < _depositAmounts.Count; i++)
 {
-    @if (!Clicked[i])
+    @if (!_clicked[i])
     {
-        @if (DepositAmounts[i] < 0)
+        @if (_depositAmounts[i] < 0)
         {
             
             var i1 = i;
-            <button class ="btn btn-primary" @onclick="() => OnButtonClick(i1)">Withdraw @((-1*DepositAmounts[i]).ToString("C"))</button>
+            <button class ="btn btn-primary" @onclick="() => OnButtonClick(i1)">Withdraw @((-1*_depositAmounts[i]).ToString("C"))</button>
         }
         else
         {
             
             var i1 = i;
-            <button class ="btn btn-primary" @onclick="() => OnButtonClick(i1)">Deposit @(DepositAmounts[i].ToString("C"))</button>
+            <button class ="btn btn-primary" @onclick="() => OnButtonClick(i1)">Deposit @(_depositAmounts[i].ToString("C"))</button>
         }
         <br/>
     }
@@ -51,15 +51,15 @@ computed answers mean anything.
 
 
 <br/>
-@if (Clicked.All(x=>x))
+@if (_clicked.All(x=>x))
 {
     @if (Math.Abs(Account.Balance - TargetBalance) < 10 * float.Epsilon)
     {
-        <span style="color: green">Well done! @Account.Balance.ToString() == @TargetBalance</span>
+        <span style="color: green">Well done! @Account.Balance.ToString("C") == @TargetBalance.ToString("C")</span>
     }
     else
     {
-        <span style="color: red">Fail! @Account.Balance != @TargetBalance. <a href="/NonAssociativeMath" @onclick="Refresh" @onclick:preventDefault>Try again.</a> </span>
+        <span style="color: red">Fail! @Account.Balance != @(TargetBalance). <a href="/NonAssociativeMath" @onclick="Refresh" @onclick:preventDefault>Try again.</a> </span>
     }
 }
 
@@ -67,14 +67,14 @@ computed answers mean anything.
 @code
 {
     [Parameter] public bool CollapseExplanation { get; set; } = true;
-    
 
-    public List<float> Deposits = new();
-    public List<float> DepositAmounts = [0.03f, 1000000f, -999999f, 0.02f];
-    public List<bool> Clicked = [false, false, false, false];
 
-    public float TargetBalance { get; set; } = 1.05f;
-    
+    private readonly List<float> _deposits = [];
+    private readonly List<float> _depositAmounts = [0.03f, 1000000f, -999999f, 0.02f];
+    private readonly List<bool> _clicked = [false, false, false, false];
+
+    private static float TargetBalance => 1.05f;
+
     protected override void OnInitialized()
     {
         base.OnInitialized();
@@ -82,20 +82,18 @@ computed answers mean anything.
     }
 
     BankAccount<float> Account { get; set; } = new(InitialBalance);
-    public const float InitialBalance = 100f;
-    public double BurnedMoney { get; set; }
-    public double TotalMoney { get; set; } = InitialBalance;
+    private const float InitialBalance = 100f;
 
-    public void OnButtonClick(int buttonIndex)
+    private void OnButtonClick(int buttonIndex)
     {
-        TransferMoney(DepositAmounts[buttonIndex]);
-        Clicked[buttonIndex] = true;
+        TransferMoney(_depositAmounts[buttonIndex]);
+        _clicked[buttonIndex] = true;
     }
 
-    public void TransferMoney(float amount)
+    private void TransferMoney(float amount)
     {
         updateService.Transfer(Account, amount);
-        Deposits.Add(amount);
+        _deposits.Add(amount);
     }
 
     private void Refresh()

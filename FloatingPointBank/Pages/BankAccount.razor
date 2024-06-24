@@ -9,11 +9,9 @@
     protected override void OnAfterRender(bool firstRender)
     {
         base.OnAfterRender(firstRender);
-        if (firstRender)
-        {
-            accountUpdateService.Accounts.Add(this);
-            accountUpdateService.TransferEvent += Transfer;
-        }
+        if (!firstRender) return;
+        accountUpdateService.Accounts.Add(this);
+        accountUpdateService.TransferEvent += Transfer;
     }
 
     private void Transfer(BankAccount<TBalance> dst, TBalance amount)
