@@ -29,4 +29,9 @@ public class AccountUpdateService<TBalance> where TBalance: INumber<TBalance>
     {
         BalanceChangedEvent?.Invoke(); //todo race condition?
     }
+
+    public void ClearAccounts()
+    {
+        Accounts.Clear();
+    }
 }

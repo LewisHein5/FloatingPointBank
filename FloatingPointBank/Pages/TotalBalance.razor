@@ -1,0 +1,44 @@
+@typeparam TBalance where TBalance: System.Numerics.INumber<TBalance>
+@inject AccountUpdateService<TBalance> updateService
+
+<p role="status">
+    Total money:
+    <span style="@Style()">
+        <NumberFormatter TNumber="double" Number="@TotalMoney"></NumberFormatter>
+    </span>
+</p>
+
+@code {
+    [Parameter]
+    public double TargetMoney { get; set; }
+    private double TotalMoney { get; set; }
+    
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        updateService.BalanceChangedEvent += UpdateMoney;
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if (firstRender)
+            UpdateMoney();
+    }
+
+    private void UpdateMoney()
+    {
+        TotalMoney = updateService.Accounts.Sum(a => double.CreateChecked(a.Balance));
+        InvokeAsync(() => StateHasChanged());
+    }
+
+    private string Style()
+    {
+        Console.WriteLine(TargetMoney);
+        Console.WriteLine(TotalMoney);
+        Console.WriteLine(Math.Abs(TotalMoney - TargetMoney));
+        if(Math.Abs(TotalMoney - TargetMoney) > double.Epsilon * 1024)
+            return "color: red";
+        return "";
+    }
+}

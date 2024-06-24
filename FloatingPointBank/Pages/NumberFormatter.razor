@@ -1,0 +1,8 @@
+@typeparam TNumber where TNumber: System.Numerics.INumber<TNumber>
+
+<span role="status">@(double.CreateChecked(Number).ToString(Format))</span>
+
+@code {
+    [Parameter] public string Format { get; set; } = "C";
+    [Parameter] public TNumber Number { get; set; }
+}

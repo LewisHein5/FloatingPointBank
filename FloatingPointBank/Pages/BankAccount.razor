@@ -2,16 +2,20 @@
 @inject AccountUpdateService<TBalance> accountUpdateService;
 <h5>Account Balance:</h5>
 
-<p role="status" >@Balance.ToString()</p>
-
+<p role="status" ><NumberFormatter TNumber="TBalance" Number="Balance" Format="C"></NumberFormatter></p>
 
 @code
 {
-    protected override void OnInitialized()
+    protected override void OnAfterRender(bool firstRender)
     {
-        accountUpdateService.Accounts.Add(this);
-        accountUpdateService.TransferEvent += Transfer;
+        base.OnAfterRender(firstRender);
+        if (firstRender)
+        {
+            accountUpdateService.Accounts.Add(this);
+            accountUpdateService.TransferEvent += Transfer;
+        }
     }
+
     private void Transfer(BankAccount<TBalance> dst, TBalance amount)
     {
         if (dst != this) return;

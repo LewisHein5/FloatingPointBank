@@ -9,9 +9,7 @@ If, instead,  we transfer a slightly smaller amount, it will be rounded to zero 
 <BankAccount @ref="Savings" TBalance="float" Balance="InitialSavingsBalance" />
 <BankAccount @ref="Checking" TBalance="float" Balance="InitialCheckingBalance" />
 
-<p role="status">
-    Current total balance: @TotalMoney.ToString("C")
-</p>
+<TotalBalance TBalance="float" TargetMoney="@(InitialCheckingBalance + InitialSavingsBalance)"></TotalBalance>
 
 @if (BurnedMoney == 0)
 {
@@ -47,7 +45,13 @@ If, instead,  we transfer a slightly smaller amount, it will be rounded to zero 
 
 @code
 {
-    
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        updateService.ClearAccounts();
+    }
+
     BankAccount<float> Savings { get; set; } = new(InitialSavingsBalance);
     BankAccount<float> Checking { get; set; } = new(InitialCheckingBalance);
     public const float InitialSavingsBalance = 1000000f;
