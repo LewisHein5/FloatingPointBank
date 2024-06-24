@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using FloatingPointBank;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
