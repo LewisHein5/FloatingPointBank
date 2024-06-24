@@ -1,31 +1,105 @@
 @page "/NonAssociativeMath"
+@inject AccountUpdateService<float> updateService
+@inject NavigationManager _NavigationManager
 
 <h3>Addition is non-associative!</h3>
 
 The loss of precision at large values for floating-point numbers means that addition is no longer associative. 
-In other words, the order we add numbers matters. This can have catastrophic consequences when we need precision
+In other words, the order we add numbers matters. This can have bad consequences if we care about whether our
+computed answers mean anything.
 
 <BankAccount @ref="Account" TBalance="float"/>
 
+
 <br/>
+<b>Try making the transactions in different orders to reach the correct balance of @(TargetBalance.ToString("C"))</b>
 <br/>
 
-@if (!CollapseExplanation)
+<ol>
+    @foreach (var deposit in Deposits)
+    {
+        @if (deposit >= 0)
+        {
+            <li><span role="status">Deposited @(deposit.ToString("C"))</span></li>
+        }
+        else
+        {
+            <li><span role="status">Withdrew @((-1 * deposit).ToString("C"))</span></li>
+        }
+    }
+</ol>
+
+@for (var i = 0; i < DepositAmounts.Count; i++)
 {
-    <div><h3>What happened?</h3> 
-        <p>
-            adada
-        </p>
-    </div>
+    @if (!Clicked[i])
+    {
+        @if (DepositAmounts[i] < 0)
+        {
+            
+            var i1 = i;
+            <button class ="btn btn-primary" @onclick="() => OnButtonClick(i1)">Withdraw @((-1*DepositAmounts[i]).ToString("C"))</button>
+        }
+        else
+        {
+            
+            var i1 = i;
+            <button class ="btn btn-primary" @onclick="() => OnButtonClick(i1)">Deposit @(DepositAmounts[i].ToString("C"))</button>
+        }
+        <br/>
+    }
 }
+
+
+<br/>
+@if (Clicked.All(x=>x))
+{
+    @if (Math.Abs(Account.Balance - TargetBalance) < 10 * float.Epsilon)
+    {
+        <span style="color: green">Well done! @Account.Balance.ToString() == @TargetBalance</span>
+    }
+    else
+    {
+        <span style="color: red">Fail! @Account.Balance != @TargetBalance. <a href="/NonAssociativeMath" @onclick="Refresh" @onclick:preventDefault>Try again.</a> </span>
+    }
+}
+
 
 @code
 {
-    public BankAccount<float> Account { get; set; }
     [Parameter] public bool CollapseExplanation { get; set; } = true;
     
-    public void DisplayExplanation()
+
+    public List<float> Deposits = new();
+    public List<float> DepositAmounts = [0.03f, 1000000f, -999999f, 0.02f];
+    public List<bool> Clicked = [false, false, false, false];
+
+    public float TargetBalance { get; set; } = 1.05f;
+    
+    protected override void OnInitialized()
     {
-        CollapseExplanation = false;
+        base.OnInitialized();
+        updateService.ClearAccounts();
+    }
+
+    BankAccount<float> Account { get; set; } = new(InitialBalance);
+    public const float InitialBalance = 100f;
+    public double BurnedMoney { get; set; }
+    public double TotalMoney { get; set; } = InitialBalance;
+
+    public void OnButtonClick(int buttonIndex)
+    {
+        TransferMoney(DepositAmounts[buttonIndex]);
+        Clicked[buttonIndex] = true;
+    }
+
+    public void TransferMoney(float amount)
+    {
+        updateService.Transfer(Account, amount);
+        Deposits.Add(amount);
+    }
+
+    private void Refresh()
+    {
+        _NavigationManager.NavigateTo("/NonAssociativeMath", true);
     }
 }

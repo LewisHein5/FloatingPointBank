@@ -7,16 +7,19 @@
 
 <h4>Without a doubt, the worst bank you have ever heard of.</h4>
 
-<p>Computers are well known to be bad at math. In fact, <b>the <i>only</i> 
-        good thing about computer arithmetic is that it is really fast.</b> 
+<p>Everybody who programs computers eventually gets a rude awakening: Computer math != the math you learned in school.
+    In fact, it is very different, but only on occasion. This lulls us programmers into a false sense of security
+    before the inevitable rude shock when <a href="http://www.esrin.esa.it/htdocs/tidc/Press/Press96/ariane5rep.html">our rocket explodes</a>,
+    <a href="http://ta.twi.tudelft.nl/users/vuik/wi211/disasters.html#sleipner">our numerical modelling sinks a drilling platform</a>, or
+    <a href="https://www.theregister.com/2007/09/26/excel_2007_bug/">our spreadsheet publicly embarrasses us</a>.
     <br/>
     <p>
-        I could bore you at length with Wikipedia articles and Official IEEE Specifications but that would be, well, boring.
+        I could drone on at length about Official IEEE Specifications but that would be boring.
         Instead, I want to do something different. I want to show you the pitfalls of computer math, let you fall into them,
         and then teach you how to skirt around the edge. So instead of reading boring documents, we're going to build a FinTech startup. I call it <i>SparrowBank.</i>
     </p>
     <p>
-        Let's start with a simple example. In real math, there is no largest number. This is not true in computer math.
+        Let's start with a simple example. In "real" math, there is no largest number. This is not true in computer math.
     </p>
 </p>
 
@@ -42,20 +45,34 @@
 @if (!CollapseExplanation)
 {
     <div><h3>What happened?</h3> 
-        It's actually pretty simple: we ran out of digits to store the bank balance. Integers are stored
-        using a sign bit at the beginning: 0 is positive and 1 is negative. For instance, if our integers were 4 bits long:
+        It's actually pretty simple: we ran out of digits to store the bank balance. Integers are stored in two's complement representation.
+        Part of this representation involves a sign bit at the beginning: 0 is positive and 1 is negative. For instance, if our integers were 4 bits long:
         <br/>
         0010 = 2
         <br/>
         1010 = -2.
     
-        <p>Addition works as normal, but what happens when we add 1 to the value 7 (0111)? 
+        <p>Addition works as normal, but when we add 1 to the value 7 (0111) 
             Following the rules of arithmetic, we get 1000, otherwise known as -8.</p>
-        This choice may seem arbitrary and unintuitive, but it preserves the algebraic properties of integers.
-        See <a href="https://en.wikipedia.org/wiki/Two%27s_complement"> Wikipedia </a>.
+        This helps preserve the algebraic properties of integers.
+        See <a href="https://en.wikipedia.org/wiki/Two%27s_complement">Wikipedia</a>.
         <br/>
     
         Ready for more? Take a look at <a href="/vanishing-floating-point-money">step 2!</a>
+    </div>
+    <br/>
+    <div>
+        <h3>How do we fix it?</h3>
+        Usually, we choose an integer type that is long enough that overflow rarely matters. Often, we also need to
+        check for overflow conditions, especialy when user input is involved.
+        Also, we usually need to carefully choose the order that operations are done.
+        
+        For further reading see:
+        
+        <ul>
+            <li><a href="https://research.google/blog/extra-extra-read-all-about-it-nearly-all-binary-searches-and-mergesorts-are-broken/">How Java binary search was broken for 9 years</a></li>
+            <li><a href="https://ad.easa.europa.eu/blob/2015-09-07_superseded.pdf/AD_US-2015-09-07_1">Boeing 787 generators power down after 2^31/100 seconds</a></li>
+        </ul>
     </div>
 }
 
