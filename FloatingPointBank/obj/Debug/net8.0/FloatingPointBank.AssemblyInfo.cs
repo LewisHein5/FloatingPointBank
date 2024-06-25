@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FloatingPointBank")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d092cdfaf6c47632f4b182e6c9531cee94a4fdab")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d50cd7823adf3f0ed37ce1020678a7857f706daa")]
 [assembly: System.Reflection.AssemblyProductAttribute("FloatingPointBank")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FloatingPointBank")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
