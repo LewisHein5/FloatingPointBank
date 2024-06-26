@@ -98,9 +98,9 @@ computed answers mean anything.
 
     private void Refresh()
     {
+        TransferMoney(-1*Account.Balance);
         _deposits = [];
         _clicked = [false, false, false, false];
         CollapseExplanation = true;
-        TransferMoney(-1*Account.Balance);
     }
 }
