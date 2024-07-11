@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "FloatingPointBank",
   "resources": {
-    "hash": "sha256-vjGFJmmOSAZMbE+ifd5h3wP/5EaaYjbIR4JdNDFz0r8=",
+    "hash": "sha256-TsoTHuCw6RPvEHfUlh0taOGGP75iLvf/Nz0v4R5vKeI=",
     "jsModuleNative": {
       "dotnet.native.8.0.7.m7qa7vz601.js": "sha256-tFsxPBbhkdn6GKNBKvCRLzrfAHdyM86odYTe0MtrwMk="
     },
@@ -17,7 +17,7 @@
       "icudt_no_CJK.dat": "sha256-L7sV7NEYP37/Qr2FPCePo5cJqRgTXRwGHuwF5Q+0Nfs="
     },
     "assembly": {
-      "FloatingPointBank.wasm": "sha256-gh6LWtbNhdkgqM1vTiylcy0PeJMNolvcepBIgcuqYQU=",
+      "FloatingPointBank.wasm": "sha256-lVXYQLgKcEA5OeVrR2Dh38S9boK307Qj5n1rtAuXatY=",
       "Microsoft.AspNetCore.Authorization.wasm": "sha256-OLGFBcpljsXLhIaQF0m6arMwqtgxgm6RbZTaO8tfkRU=",
       "Microsoft.AspNetCore.Components.Forms.wasm": "sha256-CMRkrzCDzgX1XUEE5PWWJ6Q9JsVt/StuycyytVANvQ8=",
       "Microsoft.AspNetCore.Components.wasm": "sha256-+8HtAi0ng5YbjkbeE5qEZU5ga1uH7+yDBrpxerkI1G4=",
