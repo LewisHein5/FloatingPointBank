@@ -23,10 +23,10 @@ jobs:
       - name: Install .NET WASM build tools
         run: dotnet workload install wasm-tools
       - name: Publish .NET Core project
-        run: dotnet publish ./MRO/MRO.csproj -c Release -p:PublishTrimmed=false -o release --nologo
+        run: dotnet publish ./FloatingPointBank/FloatingPointBank.csproj -c Release -p:PublishTrimmed=false -o release --nologo
         
       - name: Change base-tag in index.html
-        run: sed -i 's/<base href="\/" \/>/<base href="\/PythonMROPlayground\/" \/>/g' release/wwwroot/index.html
+        run: sed -i 's/<base href="\/" \/>/<base href="\/FloatingPointBank\/" \/>/g' release/wwwroot/index.html
         
       - name: Disable jekyll
         run: touch release/wwwroot/.nojekyll
